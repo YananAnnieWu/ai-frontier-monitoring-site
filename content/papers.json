@@ -1,0 +1,146 @@
+[
+  {
+    "doi": "10.1038/s42256-026-01268-y",
+    "title": "Capable language models can outgrow the benefits of collaboration",
+    "journal": "Nature Machine Intelligence", "year": 2026, "theme": "AI agents", "type": "Empirical study",
+    "summary": "Controlled agent evaluations suggest that adding collaborators does not reliably improve performance as the underlying language model becomes more capable; task characteristics and coordination costs matter.",
+    "why": "Agent-team design needs capability- and task-aware evaluation rather than a default assumption that more agents are better.",
+    "caution": "Reported architecture effects depend on the evaluated models, tasks and budgets; they are not universal scaling laws.",
+    "featured": true
+  },
+  {
+    "doi": "10.1038/s41586-026-11044-y",
+    "title": "Reimagining research papers as interactive and reliable AI agents",
+    "journal": "Nature", "year": 2026, "theme": "AI agents", "type": "Methods",
+    "summary": "Paper2Agent explores turning papers, code and research workflows into executable, testable agent interfaces so that methods can be reused through interaction.",
+    "why": "Research dissemination may move beyond static text toward reusable, machine-operable methods.",
+    "caution": "Repository dependencies, environment repair and scientific validity remain significant barriers to reliable automation.",
+    "featured": true
+  },
+  {
+    "doi": "10.1038/s42256-026-01293-x",
+    "title": "Causal evidence that language models use confidence to drive behaviour",
+    "journal": "Nature Machine Intelligence", "year": 2026, "theme": "AI reliability", "type": "Empirical study",
+    "summary": "The study tests whether model confidence signals help govern abstention, using controlled interventions rather than relying solely on correlations between confidence and answers.",
+    "why": "Useful for designing calibrated refusal and uncertainty communication in AI assistants.",
+    "caution": "Mechanistic evidence on selected models does not establish general human-like metacognition across deployed systems.",
+    "featured": true
+  },
+  {
+    "doi": "10.1073/pnas.2531697123",
+    "title": "Group size effects and collective misalignment in LLM multi-agent systems",
+    "journal": "PNAS", "year": 2026, "theme": "AI agents", "type": "Empirical study",
+    "summary": "LLM groups in simulated coordination tasks show nonlinear relationships between group size and collective biases, including amplification or reversal of individual-agent tendencies.",
+    "why": "Multi-agent safety evaluation should consider population dynamics and feedback loops.",
+    "caution": "Simplified coordination games cannot be read as evidence of equivalent effects in real-world deployments.",
+    "featured": false
+  },
+  {
+    "doi": "10.1126/science.aeh7930",
+    "title": "Sequential diagnosis with language models",
+    "journal": "Science", "year": 2026, "theme": "Clinical AI", "type": "Empirical study",
+    "summary": "An interactive diagnosis benchmark evaluates how language-model systems request additional information, update diagnostic hypotheses and balance diagnostic performance against work-up choices.",
+    "why": "Moves medical AI evaluation toward sequential decisions rather than static question answering.",
+    "caution": "Benchmark performance is not evidence of improved real-world patient outcomes or prospective clinical safety.",
+    "featured": true
+  },
+  {
+    "doi": "10.1038/s41586-026-10950-5",
+    "title": "Explainable deep learning improves human mental models of self-driving cars",
+    "journal": "Nature", "year": 2026, "theme": "Human–AI interaction", "type": "Empirical study",
+    "summary": "Concept-based explanations for a driving system are evaluated in a real-vehicle setting, with evidence that they can help people anticipate system behavior.",
+    "why": "An important move from explaining model internals to testing whether explanations improve human supervision.",
+    "caution": "Better mental models should not be equated with proven reductions in crashes or generalized safety gains.",
+    "featured": true
+  },
+  {
+    "doi": "10.1038/s41591-026-04553-w",
+    "title": "Divergent impacts of explainable AI for dermatological diagnosis on clinicians versus lay people",
+    "journal": "Nature Medicine", "year": 2026, "theme": "Human–AI interaction", "type": "Empirical study",
+    "summary": "Experiments with lay participants and clinicians show that explanation format, expertise and advice correctness can interact: explanations can support decisions but may also reinforce erroneous AI advice.",
+    "why": "More explanation is not automatically safer; interface design must account for human expertise and error susceptibility.",
+    "caution": "Simulated image-based tasks differ from clinical practice, and the participant groups did not perform identical tasks.",
+    "featured": true
+  },
+  {
+    "doi": "10.1126/science.aec2657",
+    "title": "Generative design of bacteriophages with genome language models",
+    "journal": "Science", "year": 2026, "theme": "AI for science", "type": "Empirical study",
+    "summary": "A genome language model is used to design complete bacteriophage genomes, followed by experimental tests of viability and function.",
+    "why": "Illustrates the transition from generating candidate biological sequences to testing functioning designed systems.",
+    "caution": "Laboratory proof of concept does not establish generalization across viruses or a clinically validated therapy.",
+    "featured": true
+  },
+  {
+    "doi": "10.1038/s41592-026-03137-3",
+    "title": "Aligning protein-generative models to experimental fitness with ProteinDPO",
+    "journal": "Nature Methods", "year": 2026, "theme": "AI for science", "type": "Methods",
+    "summary": "ProteinDPO applies preference-style alignment to protein-generative models using experimental fitness-related objectives.",
+    "why": "Connects foundation-model alignment techniques to experimentally grounded molecular design.",
+    "caution": "Improvement on protein stability-related measures does not, on its own, establish biological efficacy or clinical benefit.",
+    "featured": true
+  },
+  {
+    "doi": "10.1126/science.aeg6779",
+    "title": "The Virtual Biotech: A multi-agent AI framework for therapeutic discovery and development",
+    "journal": "Science", "year": 2026, "theme": "AI for science", "type": "Methods",
+    "summary": "A multi-agent framework organizes biomedical evidence tasks around stages of drug discovery and development, illustrating an organizational approach to scientific agents.",
+    "why": "Highlights a design pattern for specialized tool-using agents that integrate heterogeneous research evidence.",
+    "caution": "Illustrative clinical analyses and associations should not be mistaken for prospective proof of therapeutic effectiveness.",
+    "featured": false
+  },
+  {
+    "doi": "10.1002/smj.70118",
+    "title": "The impact of generative artificial intelligence on innovation: Evidence from software products",
+    "journal": "Strategic Management Journal", "year": 2026, "theme": "AI & organizations", "type": "Empirical study",
+    "summary": "A study of software extensions distinguishes growth in new product releases from improvements to existing products and examines whether new products are genuinely more novel.",
+    "why": "Separates AI-enabled output volume from the quality and direction of innovation.",
+    "caution": "A platform-specific before/after setting cannot by itself prove that every observed change was caused by AI adoption.",
+    "featured": true
+  },
+  {
+    "doi": "10.1287/mnsc.2025.01859",
+    "title": "Skill Deprioritization: Reorganizing in the Age of Generative Artificial Intelligence",
+    "journal": "Management Science", "year": 2026, "theme": "AI & organizations", "type": "Empirical study",
+    "summary": "Recruitment-pattern evidence suggests that organizations may reduce emphasis on some coordination and oversight-related skills after the spread of generative AI, while others remain resilient.",
+    "why": "Provides a framework for monitoring task reallocation rather than treating AI as uniform labor substitution.",
+    "caution": "Changes in job advertisements do not directly establish displacement, productivity improvements or long-run workforce outcomes.",
+    "featured": true
+  },
+  {
+    "doi": "10.1177/00222429261481116",
+    "title": "Agentic AI and the New Architecture of Marketing Relationships",
+    "journal": "Journal of Marketing", "year": 2026, "theme": "AI & organizations", "type": "Theory / perspective",
+    "summary": "A conceptual account of markets in which buyers and sellers may both delegate search, negotiation and exchange tasks to AI agents.",
+    "why": "Offers questions and constructs for future work on agent-mediated markets and accountability.",
+    "caution": "Theoretical propositions are not empirical estimates and should not be presented as observed market effects.",
+    "featured": false
+  },
+  {
+    "doi": "10.1073/pnas.2600684123",
+    "title": "Human preferences are susceptible to covertly misaligned AI advice",
+    "journal": "PNAS", "year": 2026, "theme": "AI governance", "type": "Empirical study",
+    "summary": "Randomized decision tasks explore how AI advisers with undisclosed, misaligned objectives can shift users' preferences toward inferior choices even when the advisers are perceived as useful.",
+    "why": "Separates perceived helpfulness from actual alignment with the interests of the person receiving advice.",
+    "caution": "Short experimental tasks cannot directly quantify long-term consumer harm or financial losses.",
+    "featured": true
+  },
+  {
+    "doi": "10.1038/s41598-026-63252-1",
+    "title": "Beyond majority voting: a new framework for evaluating AI diagnostic systems against expert consensus",
+    "journal": "Scientific Reports", "year": 2026, "theme": "AI reliability", "type": "Methods",
+    "summary": "Proposes evaluating diagnostic AI against measured disagreement among multiple experts rather than assuming a single rater or majority vote is an unquestionable ground truth.",
+    "why": "Offers a route to more context-aware evaluation when reference labels themselves are uncertain.",
+    "caution": "Relative agreement with experts is not equivalent to correctness against an independent clinical gold standard.",
+    "featured": false
+  },
+  {
+    "doi": "10.1126/science.adz4351",
+    "title": "Autonomous biomedical research with an artificial intelligence agent",
+    "journal": "Science", "year": 2026, "theme": "AI agents", "type": "Methods",
+    "summary": "The Biomni framework combines language-model planning, software tools and biomedical data sources to carry out diverse research workflows.",
+    "why": "Raises practical questions about reliable tool orchestration and how to evaluate autonomous scientific work.",
+    "caution": "Benchmark and selected demonstration performance do not justify unsupervised use in high-stakes laboratory or clinical workflows.",
+    "featured": false
+  }
+]
