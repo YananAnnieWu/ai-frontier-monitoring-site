@@ -3,13 +3,15 @@ name: Build and deploy public research site
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: github-pages
+  group: github-pages-${{ github.event_name }}
   cancel-in-progress: false
 
 jobs:
@@ -26,12 +28,16 @@ jobs:
         run: python scripts/build.py
       - name: Validate content, links and publication boundary
         run: python scripts/check.py
-      - name: Upload generated site
+      - name: Regression-test future issues, papers and themes without publishing fixtures
+        run: python scripts/test_reusability.py
+      - name: Upload generated site (main branch only)
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:

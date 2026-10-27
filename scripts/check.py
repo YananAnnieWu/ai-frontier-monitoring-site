@@ -4,6 +4,7 @@ from __future__ import annotations
 from html.parser import HTMLParser
 import json
 from pathlib import Path
+from datetime import date
 from urllib.parse import urlsplit, unquote
 import re
 import sys
@@ -11,7 +12,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'site'
 REQUIRED={
- 'index.html','reports/index.html','reports/issue-001/index.html','papers/index.html',
+ 'index.html','reports/index.html','papers/index.html',
  'themes/index.html','methodology/index.html','archive/index.html','404.html',
  'assets/style.css','assets/app.js','assets/favicon.svg','data/featured-papers.json','.nojekyll'
 }
@@ -43,20 +44,64 @@ def validate():
     for f in REQUIRED-files:problems.append('Missing '+f)
     papers=json.loads((ROOT/'content/papers.json').read_text())
     public=json.loads((OUT/'data/featured-papers.json').read_text())
-    issue=json.loads((ROOT/'content/issue.json').read_text())
-    if len(papers)!=16 or len(public)!=16:problems.append('Unexpected paper count')
+    issue_files=sorted((ROOT/'content/issues').glob('*.json'))
+    themes=json.loads((ROOT/'content/themes.json').read_text())
+    if not isinstance(papers,list) or not papers or not isinstance(public,list) or public!=papers:
+        problems.append('Missing or inconsistent public paper catalogue')
+    if not isinstance(themes,dict) or not themes or any(not k or not isinstance(v,str) or not v for k,v in themes.items()):
+        problems.append('Invalid editable theme index')
     if not all(set(p)==PUBLIC_KEYS for p in papers):problems.append('Paper content must use explicit public field allowlist')
     dois=[x['doi'] for x in papers]
     if len(set(dois))!=len(dois):problems.append('Duplicate DOI')
+    for p in papers:
+        if p.get('theme') not in themes:problems.append('Unlisted theme '+repr(p.get('theme')))
+        if not isinstance(p.get('year'),int) or not 1900<=p['year']<=2200:
+            problems.append('Invalid publication year '+p.get('doi','?'))
+        if not isinstance(p.get('featured'),bool):problems.append('Nonboolean feature flag '+p.get('doi','?'))
+    ids=set();issues=[];pairs=set()
+    if not issue_files:problems.append('No dated issues found')
+    for path in issue_files:
+        try:issue=json.loads(path.read_text(encoding='utf-8'))
+        except (ValueError,UnicodeError) as e:
+            problems.append('Malformed issue JSON '+path.name+': '+str(e));continue
+        issue_id=issue.get('id','')
+        if not re.fullmatch(r'[0-9]{3}',str(issue_id)) or path.stem!=issue_id:
+            problems.append('Issue ID must equal its 3-digit JSON filename '+path.name)
+        if issue_id in ids:problems.append('Repeated issue ID '+str(issue_id))
+        ids.add(issue_id)
+        try:
+            pub_date=date.fromisoformat(issue.get('date',''))
+            if pub_date.isoformat()!=issue['date']:raise ValueError('non-ISO publication date')
+        except (ValueError,TypeError):problems.append('Invalid issue publication date '+str(issue_id))
+        pair=(issue.get('date'),issue_id)
+        if pair in pairs:problems.append('Duplicate publication edition '+str(pair))
+        pairs.add(pair)
+        for required_key in ('title','subtitle','lead','scope'):
+            if not isinstance(issue.get(required_key),str) or not issue[required_key].strip():
+                problems.append('Incomplete issue '+str(issue_id)+' / '+required_key)
+        if not isinstance(issue.get('watchlist'),list) or not all(isinstance(w,str) and w.strip() for w in issue['watchlist']):
+            problems.append('Invalid issue watchlist '+str(issue_id))
+        if not isinstance(issue.get('signals'),list) or not issue['signals']:
+            problems.append('Issue has no research signals '+str(issue_id))
+        else:
+            for signal in issue['signals']:
+                for key in ('eyebrow','title','body','takeaway'):
+                    if not isinstance(signal.get(key),str) or not signal[key].strip():
+                        problems.append('Incomplete signal '+str(issue_id)+' / '+key)
+                if not isinstance(signal.get('dois'),list) or not signal['dois']:
+                    problems.append('Signal has no DOI references '+str(issue_id))
+                else:
+                    for doi in signal['dois']:
+                        if doi not in dois:problems.append('Issue '+str(issue_id)+' references unlisted DOI '+str(doi))
+        required_issue_page='reports/issue-'+str(issue_id)+'/index.html'
+        if required_issue_page not in files:problems.append('Missing generated issue page '+required_issue_page)
+        issues.append(issue)
     for p in papers:
         if not re.match(r'^10\.\d{4,9}/[^\s<>]+$',p.get('doi','')):problems.append('Invalid DOI '+repr(p.get('doi')))
         if not p.get('caution') or not p.get('summary') or not p.get('why'):problems.append('Incomplete editorial boundary '+p['doi'])
         if len(p['summary'])>490 or len(p['caution'])>490:problems.append('Overlong public note '+p['doi'])
         if f"https://doi.org/{p['doi']}" not in (OUT/'papers'/('p-'+re.sub(r'[^a-z0-9]+','-',p['doi'].lower()).strip('-'))/'index.html').read_text():
             problems.append('No original source DOI in paper note '+p['doi'])
-    for s in issue['signals']:
-        for doi in s['dois']:
-            if doi not in dois:problems.append('Issue references unlisted DOI '+doi)
     for f in OUT.rglob('*'):
         if not f.is_file() or f.suffix not in ('.html','.css','.js','.json','.svg','.txt'):continue
         contents=f.read_text(encoding='utf-8')
@@ -88,7 +133,7 @@ def validate():
         raise SystemExit(1)
     count=len(list(OUT.rglob('*.html')))
     print(json.dumps({'status':'PUBLICATION QA PASS','html_pages':count,'selected_papers':len(papers),
-                      'research_signals':len(issue['signals']),'private_links_or_raw_databases':0,
+                      'issues':len(issues),'research_signals':sum(len(issue['signals']) for issue in issues),'private_links_or_raw_databases':0,
                       'broken_links':0},indent=2))
 
 if __name__=='__main__':validate()

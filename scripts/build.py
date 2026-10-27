@@ -15,17 +15,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "site"
 PAPERS = json.loads((ROOT / "content/papers.json").read_text(encoding="utf-8"))
-ISSUE = json.loads((ROOT / "content/issue.json").read_text(encoding="utf-8"))
 CONFIG = json.loads((ROOT / "content/site.json").read_text(encoding="utf-8"))
-THEMES = {
-    "AI agents": "Collaboration, tool use and autonomous research workflows.",
-    "AI reliability": "Confidence, evaluation, reference standards and measurement.",
-    "Human–AI interaction": "Explanations, trust, calibrated reliance and user expertise.",
-    "Clinical AI": "Clinical model evaluation, dynamic diagnosis and safety boundaries.",
-    "AI for science": "Computational methods linked to experimental discovery.",
-    "AI & organizations": "Innovation, work design, managerial decisions and markets.",
-    "AI governance": "Alignment, incentives, accountability and societal risks.",
-}
+THEMES = json.loads((ROOT / "content/themes.json").read_text(encoding="utf-8"))
+ISSUE_FILES = sorted((ROOT / "content/issues").glob("[0-9][0-9][0-9].json"))
+ISSUES = [json.loads(p.read_text(encoding="utf-8")) for p in ISSUE_FILES]
+ISSUES.sort(key=lambda issue: (issue["date"], issue["id"]), reverse=True)
+if not ISSUES:
+    raise ValueError("At least one public issue JSON is required")
+ISSUE = ISSUES[0]  # newest dated published issue
+
+
+def issue_path(issue):
+    return "issue-" + issue["id"] + "/"
+
+
+def issue_date(issue):
+    return datetime.strptime(issue["date"], "%Y-%m-%d").strftime("%d %B %Y")
 
 
 def esc(v):
@@ -90,7 +95,7 @@ def layout(title, desc, body, *, depth=0, active="", page_type="website"):
  <div class="footer-top"><div><a class="brand" href="{prefix}"><span class="brand-mark" aria-hidden="true">A·</span><span><span class="brand-title">AI Frontier Monitoring</span><span class="brand-sub">Curated. Cited. Revisited.</span></span></a>
  <p style="font-size:.83rem;max-width:380px;margin-top:16px">Independent editorial syntheses and direct links to original research. Not affiliated with the journals or publishers referenced.</p></div>
  <nav aria-label="Footer navigation">{footer_nav}</nav></div>
- <div class="footer-bottom">© 2026 AI Frontier Monitoring · Selective research briefing, not a systematic review or professional advice. · First published 27 October 2026.</div>
+ <div class="footer-bottom">© {datetime.now().year} AI Frontier Monitoring · Selective research briefing, not a systematic review or professional advice. · First published 27 October 2026.</div>
 </div></footer>
 </body></html>'''
 
@@ -127,22 +132,24 @@ def paper_card(p, depth=1):
 
 def build_home():
     featured = [p for p in PAPERS if p["featured"]]
+    latest_href = "reports/" + issue_path(ISSUE)
+    signal_points = ''.join(f'<li>{esc(s["title"])}</li>' for s in ISSUE['signals'][:4])
     body=f'''<section class="hero"><div class="container hero-inner">
-        <div class="eyebrow"><span class="dot"></span> Volume 01 · October 2026</div>
+        <div class="eyebrow"><span class="dot"></span> Issue {esc(ISSUE['id'])} · {esc(ISSUE['date'])}</div>
         <h1>Reading the signal<br>in AI research.</h1>
         <p class="lead">An independent, evidence-aware observatory of work shaping artificial intelligence—across systems, people, healthcare, scientific discovery and organizations.</p>
-        <div class="hero-actions"><a class="button button-primary" href="reports/issue-001/">Read the inaugural briefing <span aria-hidden="true">↗</span></a>
+        <div class="hero-actions"><a class="button button-primary" href="{latest_href}">Read the latest briefing <span aria-hidden="true">↗</span></a>
          <a class="button button-outline" href="papers/">Explore selected papers</a></div>
-        <div class="hero-meta"><span><b>Public edition 001</b> · 27 October 2026</span><span>Original DOI links</span><span>Evidence limits shown</span></div>
+        <div class="hero-meta"><span><b>Latest issue {esc(ISSUE['id'])}</b> · {issue_date(ISSUE)}</span><span>{len(ISSUES)} published editions</span><span>Evidence limits shown</span></div>
       </div></section>
-      <section class="section"><div class="container"><div class="section-head"><div><div class="section-kicker">Research briefing</div><h2>This edition's central questions</h2></div><p>Five connected signals from published research, presented with source links and bounded interpretations.</p></div>
-      <div class="cards-2"><article class="brief-feature"><span class="tag">Featured editorial · Issue 001</span>
+      <section class="section"><div class="container"><div class="section-head"><div><div class="section-kicker">Research briefing</div><h2>This edition's central questions</h2></div><p>Selected signals from published research, with original-source links and bounded interpretations.</p></div>
+      <div class="cards-2"><article class="brief-feature"><span class="tag">Featured editorial · Issue {esc(ISSUE['id'])}</span>
         <h3>{esc(ISSUE['title'])}</h3><p>{esc(ISSUE['lead'])}</p>
-        <a class="button button-quiet" href="reports/issue-001/">Read the complete brief <span aria-hidden="true">↗</span></a>
+        <a class="button button-quiet" href="{latest_href}">Read the complete brief <span aria-hidden="true">↗</span></a>
         </article><aside class="brief-side"><span class="eyebrow">Inside this edition</span>
-        <h3>From technical capability to practical accountability.</h3>
-        <ul><li>When do AI agents benefit from teamwork?</li><li>Can explanations improve—or impair—human oversight?</li><li>How can we tell useful AI science from promising demos?</li><li>Is AI changing the quantity or the nature of work?</li></ul>
-        <a href="reports/issue-001/">Explore all five signals ↗</a></aside></div></div></section>
+        <h3>{esc(ISSUE['subtitle'])}</h3>
+        <ul>{signal_points}</ul>
+        <a href="{latest_href}">Explore all {len(ISSUE['signals'])} signals ↗</a></aside></div></div></section>
       <section class="section section-alt"><div class="container"><div class="section-head"><div><div class="section-kicker">Paper selection</div><h2>Start with the studies</h2></div><a href="papers/" class="text-link">Browse all {len(PAPERS)} papers</a></div>
       <div class="tile-grid">{''.join(mini_paper(p) for p in featured[:6])}</div></div></section>
       <section class="section"><div class="container"><div class="section-head"><div><div class="section-kicker">Areas of inquiry</div><h2>One frontier, many disciplines</h2></div><p>We follow questions that cross traditional journal and domain boundaries.</p></div>
@@ -179,31 +186,36 @@ def build_papers():
 
 
 def build_reports():
+    rows=[]
+    byid={p['doi']:p for p in PAPERS}
+    for issue in ISSUES:
+        rows.append(f'''<article class="archive-row"><div><div class="section-kicker">Issue {esc(issue['id'])} · {esc(issue['date'])}</div>
+           <h3><a href="{issue_path(issue)}">{esc(issue['title'])}</a></h3><p>{esc(issue['subtitle'])}</p></div>
+           <div class="archive-meta">{len(issue['signals'])} research signals<br>{issue_date(issue)}</div></article>''')
     body=heading("Research reports","Curated syntheses that connect papers into research questions, track implications and state what remains uncertain.","reports")+f'''<section class="main-content"><div class="container">
-       <article class="archive-row"><div><div class="section-kicker">Issue {esc(ISSUE['id'])} · {esc(ISSUE['date'])}</div>
-       <h3><a href="issue-001/">{esc(ISSUE['title'])}</a></h3><p>{esc(ISSUE['subtitle'])}</p></div><div class="archive-meta">{len(ISSUE['signals'])} research signals<br>Inaugural edition</div></article>
-       <p class="section-note" style="margin-top:22px">Reports are published as dated editions. A future substantive correction will be documented in the public archive.</p>
+       {''.join(rows)}
+       <p class="section-note" style="margin-top:22px">Each edition has a permanent URL. Substantive corrections are documented through public revision history.</p>
        </div></section>'''
     write("reports/index.html",layout("Reports","Dated editorial research reports and cross-disciplinary AI frontier briefs.",body,depth=1,active="reports"))
-    signal_html=[]
-    byid={p['doi']:p for p in PAPERS}
-    for s in ISSUE['signals']:
-        refs=''.join(f'<a href="{page_href(doi,2)}">{esc(byid[doi]["journal"])} · {esc(byid[doi]["year"])} ↗</a>' for doi in s['dois'])
-        signal_html.append(f'''<section class="signal"><div class="eyebrow">{esc(s['eyebrow'])}</div><h2>{esc(s['title'])}</h2>
-          <p>{esc(s['body'])}</p><div class="takeaway">What to watch: {esc(s['takeaway'])}</div>
-          <div class="source-list" aria-label="References for this signal">Read the original studies through their linked notes: {refs}</div></section>''')
-    items=''.join(f'<li>{esc(x)}</li>' for x in ISSUE['watchlist'])
-    body=f'''<section class="page-hero"><div class="container"><div class="breadcrumbs"><a href="../../">Home</a> / <a href="../">Reports</a> / Issue 001</div>
-     <div class="section-kicker" style="margin-top:24px">Research briefing · Volume 01</div><h1>{esc(ISSUE['title'])}</h1><p>{esc(ISSUE['subtitle'])}</p>
-     <div class="byline"><span>Published {esc(ISSUE['date'])}</span><span>5 signals</span><span>Selective editorial synthesis</span></div></div></section>
-     <section class="main-content"><div class="container"><article class="reading-shell"><p class="report-lead">{esc(ISSUE['lead'])}</p>
-       <p>We organize this issue around research questions rather than performance headlines. Each signal points to selected source publications and explicitly distinguishes the evidence from wider inferences.</p>
-       {''.join(signal_html)}
-       <h2>Questions for the next edition</h2><ol>{items}</ol>
-       <div class="disclaimer" style="margin-top:30px"><strong>Scope and evidence.</strong> {esc(ISSUE['scope'])}</div>
-       <p style="margin-top:30px"><a href="../">← All research reports</a></p>
-     </article></div></section>'''
-    write("reports/issue-001/index.html",layout(ISSUE['title'],ISSUE['subtitle'],body,depth=2,active="reports",page_type="article"))
+    for issue in ISSUES:
+        signal_html=[]
+        for signal in issue['signals']:
+            refs=''.join(f'<a href="{page_href(doi,2)}">{esc(byid[doi]["journal"])} · {esc(byid[doi]["year"])} ↗</a>' for doi in signal['dois'])
+            signal_html.append(f'''<section class="signal"><div class="eyebrow">{esc(signal['eyebrow'])}</div><h2>{esc(signal['title'])}</h2>
+              <p>{esc(signal['body'])}</p><div class="takeaway">What to watch: {esc(signal['takeaway'])}</div>
+              <div class="source-list" aria-label="References for this signal">Read the original studies through their linked notes: {refs}</div></section>''')
+        items=''.join(f'<li>{esc(x)}</li>' for x in issue['watchlist'])
+        body=f'''<section class="page-hero"><div class="container"><div class="breadcrumbs"><a href="../../">Home</a> / <a href="../">Reports</a> / Issue {esc(issue['id'])}</div>
+         <div class="section-kicker" style="margin-top:24px">Research briefing · Issue {esc(issue['id'])}</div><h1>{esc(issue['title'])}</h1><p>{esc(issue['subtitle'])}</p>
+         <div class="byline"><span>Published {issue_date(issue)}</span><span>{len(issue['signals'])} signals</span><span>Selective editorial synthesis</span></div></div></section>
+         <section class="main-content"><div class="container"><article class="reading-shell"><p class="report-lead">{esc(issue['lead'])}</p>
+           <p>We organize this issue around research questions rather than performance headlines. Each signal points to selected source publications and explicitly distinguishes the evidence from wider inferences.</p>
+           {''.join(signal_html)}
+           <h2>Questions for the next edition</h2><ol>{items}</ol>
+           <div class="disclaimer" style="margin-top:30px"><strong>Scope and evidence.</strong> {esc(issue['scope'])}</div>
+           <p style="margin-top:30px"><a href="../">← All research reports</a></p>
+         </article></div></section>'''
+        write("reports/"+issue_path(issue)+"index.html",layout(issue['title'],issue['subtitle'],body,depth=2,active="reports",page_type="article"))
 
 
 def build_themes():
@@ -214,7 +226,7 @@ def build_themes():
            <h2>{esc(t)}</h2><p>{esc(d)}</p>
            <ul>{''.join(f'<li><a href="{page_href(p["doi"],1)}">{esc(p["title"])}</a> <span class="section-note">— {esc(p["journal"])}</span></li>' for p in ps)}</ul></section>''')
     body=heading("Research areas","A question-led map of selected AI work across scientific and social domains.","themes")+f'<div class="container main-content"><div class="reading-shell">{"".join(blocks)}</div></div>'
-    write("themes/index.html",layout("Research areas","Browse seven research themes and source-linked highlights.",body,depth=1,active="themes"))
+    write("themes/index.html",layout("Research areas",f"Browse {len(THEMES)} research themes and source-linked highlights.",body,depth=1,active="themes"))
 
 
 def build_methodology():
@@ -238,11 +250,18 @@ def build_methodology():
 
 
 def build_archive():
+    groups=[]
+    current_year=None
+    for issue in ISSUES:
+        year=issue['date'][:4]
+        if year!=current_year:
+            groups.append(f'<div class="section-kicker">{esc(year)}</div>')
+            current_year=year
+        groups.append(f'''<article class="archive-row"><div><h3><a href="../reports/{issue_path(issue)}">{issue_date(issue)} · Issue {esc(issue['id'])}</a></h3>
+           <p><strong>{esc(issue['title'])}</strong> — {esc(issue['subtitle'])}</p></div><div class="archive-meta">{len(issue['signals'])} research signals</div></article>''')
     body=heading("Publication archive","The public record of our editorial editions and significant updates.","archive")+f'''<section class="main-content"><div class="container">
-       <div class="section-kicker">2026</div>
-       <article class="archive-row"><div><h3><a href="../reports/issue-001/">27 October 2026 · Issue 001</a></h3>
-       <p><strong>{esc(ISSUE['title'])}</strong> — the inaugural cross-disciplinary research brief.</p></div><div class="archive-meta">5 research signals<br>16 linked papers</div></article>
-       <div class="disclaimer" style="margin-top:30px">Public release 1.0. This archive is intentionally small. Future editions and corrections will be added with explicit dates. Internal review histories, screening databases and unpublished drafts are not part of the public archive.</div>
+       {''.join(groups)}
+       <div class="disclaimer" style="margin-top:30px">This archive is built from dated, permanently addressable public issues. Source edits are recorded by Git history. Internal screening databases, source documents, drafts and patient information are never part of this public archive.</div>
        </div></section>'''
     write("archive/index.html",layout("Archive","Dated issues and public research editorial updates.",body,depth=1,active="archive"))
 
@@ -263,6 +282,6 @@ def build():
     safe_keys=("doi","title","journal","year","theme","type","summary","why","caution","featured")
     catalogue=[{k:p[k] for k in safe_keys} for p in PAPERS]
     write("data/featured-papers.json",json.dumps(catalogue,ensure_ascii=False,indent=2)+"\n")
-    print(f"Generated {len(list(OUT.rglob('index.html')))} index pages and {len(PAPERS)} research notes at {OUT}")
+    print(f"Generated {len(list(OUT.rglob('index.html')))} index pages, {len(ISSUES)} issues and {len(PAPERS)} research notes at {OUT}")
 
 if __name__=="__main__":build()

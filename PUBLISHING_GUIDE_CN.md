@@ -1,42 +1,41 @@
-# AI Frontier Monitoring 公开网页 · 发布说明
+# AI Frontier Monitoring 公开网站：长期更新指南（V2）
 
-## 已完成什么
+## 当前架构
 
-网站第一版已经生成并经过本地自动检查，包括：主页、研究报告第 001 期、16 篇重要论文介绍页、研究主题、方法说明与历史档案。**网页尚未上线**：现有 GitHub 连接不提供「新建仓库 / 开启 Pages」操作，因此这两个步骤需要在网页上操作。
+- **公开网站**：`YananAnnieWu/ai-frontier-monitoring-site`，仅公开经过编辑核验的简报和精选论文介绍。
+- **私有研究系统**：继续保存源文献池、SQLite、内部 GPT 分析、审计日志和工作流。公开仓库不会自动读取私有数据。
+- **发布平台**：GitHub Pages + GitHub Actions。只有通过校验、合并或推送到 `main` 的内容才触发正式部署。
 
-## 第一次发布（推荐）
+## 每两周发布新一期报告
 
-1. 登录 GitHub，打开 <https://github.com/new>。
-2. Owner 选择自己的账户，Repository name 填 `ai-frontier-monitoring-site`，Visibility 必须选 **Public**。新仓库不要引用、导入或复制现有的私有 `ai-frontier-monitoring` 仓库。
-3. 下载并解压 **源码包** `ai-frontier-public-site-source-v1.zip`，确保解压后含 `content/`, `scripts/`, `.github/workflows/pages.yml`, `assets/`, `site/` 和 `README.md`。
-4. 在本地源码目录打开终端，执行：
+1. 打开公开仓库的 `content/issues/`，复制上一期 `NNN.json` 到下一个编号的文件，例如 `002.json`。
+2. 设置 `id: "002"`，更新 `date`、`title`、`subtitle`、`lead`、`signals`、`watchlist`、`scope`。`date` 使用 `YYYY-MM-DD`，不要覆盖 001 期。
+3. `signals` 的每一个 DOI 必须先存在于 `content/papers.json`。否则构建会失败，防止简报引用未发布或内部研究材料。
+4. 新精选论文按 11 字段统一模板添加到 `content/papers.json`：DOI、标题、期刊、年份、主题、文章类型、简短研究概要、研究意义、证据局限、`featured` 等。**不要复制私有报告或全文摘要**。
+5. 如有新的研究主题，修改 `content/themes.json`。页面、导航、主题计数会自动更新。
+6. 建议通过新分支 / Pull Request 进行编辑审核；PR 自动运行构建与测试，但不发布。审核后合并到 `main`，Pages 自动部署。
 
-   ```bash
-   git init
-   git branch -M main
-   git add .
-   git commit -m "Launch public AI frontier research site v1"
-   git remote add origin https://github.com/<YOUR_GITHUB_USERNAME>/ai-frontier-monitoring-site.git
-   git push -u origin main
-   ```
+下一期发布后：首页自动指向最新一期；`Reports` 自动增加本期；`Archive` 按日期、年份排列；旧期网址保持不变。新增论文会自动出现在论文目录、检索及各主题页面。
 
-   将 `<YOUR_GITHUB_USERNAME>` 替换为你的 GitHub 用户名。**请勿将整个私有仓库复制过去。**
-5. 进入新仓库 **Settings → Pages → Build and deployment → Source → GitHub Actions**。
-6. 进入 **Actions**，观察 `Build and deploy public research site` 工作流成功完成；然后在 **Settings → Pages → Visit site** 查看实际网址。
+## 验证
 
-> GitHub Pages 需要仓库存在且工作流实际成功运行后才有可验证的网址。这里不提前承诺一个已经上线的链接。
+仓库内的自动化运行：
 
-## 后续更新
+```bash
+python scripts/build.py
+python scripts/check.py
+python scripts/test_reusability.py
+```
 
-- 添加精选论文：编辑 `content/papers.json`，填写题目、DOI、期刊、研究主题、简短结论、意义和限制。不要粘贴整篇摘要或内部 GPT 分析。
-- 新增报告：当前首期用 `content/issue.json` 配置。第二期需扩展生成器支持多期报告（在 V2 迭代）。目前可稳定更新第一期文案和重要文献。
-- 本地检查：`python scripts/build.py`，`python scripts/check.py`。
-- 提交经人工核对的内容，GitHub Actions 会构建并发布。
-- 私有项目负责采集与内部审查；公开网站发布要经过**单独的编辑选择**，不建立自动拉取私有源数据的工作流。
+第三个命令在临时目录中模拟 **002、003 期 + 第 17 篇论文 + 新主题**，检查旧报告仍存在、最新报告显示正确、所有链接正常和错误引用会被拒绝。模拟数据不会对外发布。
 
-## 发布之前复核
+## 版本记录与质量管理
 
-- 确保公开内容和措辞符合教授/团队对署名和对外发布的要求。
-- 核对高风险数字、论文类型以及 DOI 目标是否正确。
-- 不发布真实患者数据、内部稿件、个人联系方式、私有 Drive 链接或访问凭据。
-- 如果希望以后固定双周自动发布，建议先建立编辑审核 PR 工作流，而不是无审批直接上线。
+- 每期是独立的 `content/issues/NNN.json` 文件，有永久网页 URL；不把以前的报告覆盖为新的一期。
+- Git commit / PR 形成编辑修改记录。若旧简报有实质性订正，应通过独立且描述明确的提交记录说明，不应悄悄重新定义旧报告的结论。
+- 原始论文集合、尚待核实的摘要、长篇 GPT 结构化结果、数据库和内部审计记录一律不能放入公开仓库。
+- 所有公开解读都需与论文实际证据级别一致，不得将 AI 生成的评论当作独立全文核验。
+
+## 注意：目前没有做到的事
+
+自动**部署**不等于自动**出版**：从私有研究库选择论文、核实证据、撰写报告和审批仍需要编辑决定。网站故意不直接连接私有仓库，以避免内部数据意外曝光。用户以后可以进一步建立受审批控制的半自动发布工具，但不应让采集工作流直接向公开网站写入。

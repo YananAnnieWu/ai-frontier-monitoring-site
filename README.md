@@ -1,51 +1,64 @@
-# AI Frontier Monitoring — public site v1
+# AI Frontier Monitoring — public editorial site
 
-An intentionally **public-only editorial website**, separate from the private research and ingestion systems. Contains curated paper metadata, original short summaries, one launch report and methods. No raw candidate database, raw abstracts, GPT batch JSONs, internal analysis history or Drive material.
+A **public, selectively curated** AI research observatory maintained independently of the private research collection and analysis pipeline. The project tracks AI research broadly, rather than focusing solely on radiology quality control.
 
-## Reproduce the static site
+## What changes in V2
 
-Requirements: Python 3.10+ (standard library only).
+This is a **reusable content-driven publisher**, not a fixed collection of 16 pages:
+
+- Reports: each dated issue has its own permanent JSON file under `content/issues/NNN.json`, automatically rendered at `/reports/issue-NNN/`.
+- Homepage: automatically displays the most recently **dated** published issue.
+- Reports and Archive: automatically include **all issues**, grouped by year in the archive.
+- Paper shelf: `content/papers.json` can grow; pages, filters and counts are regenerated from the data.
+- Research areas: edit `content/themes.json` to add or revise topics without modifying Python templates.
+- Publication safeguards: all cited DOIs must exist in the public paper shelf; links, page structure, schema, and privacy rules are checked before deployment.
+- Deploy: a push to `main` rebuilds GitHub Pages. Pull requests run the same build and tests **without deploying**, allowing editorial review before merging.
+
+**Do not** copy private SQLite, original abstracts, GPT review packets, Drive archives, drafts, medical records or authentication tokens into this repository. It has no connector to the private repo or Google Drive.
+
+## Standard update procedure
+
+### Publish a new dated report
+
+1. Copy `content/issues/001.json` to `content/issues/002.json` (and later `003.json`, etc.).
+2. Change `id` (`"002"`), `date` (`YYYY-MM-DD`), title, subtitle, lead, `signals`, `watchlist`, and scope. The filename must equal the three-digit ID.
+3. Every DOI in `signals[].dois` must already be listed in `content/papers.json`. Add any new **approved, publicly appropriate** paper notes there first.
+4. Optionally add new theme descriptions in `content/themes.json`. Existing reports stay as their original files and URL paths.
+5. Create a pull request for editorial verification; after approval, merge into `main`. GitHub Actions deploys it automatically.
+
+No Python, CSS or HTML changes are required for a new issue or paper. Historical issues are not overwritten; correction to an already published issue should be made in a separate, descriptive PR/commit and documented publicly if substantive.
+
+### Add a paper
+
+Append a JSON object to `content/papers.json` with **exactly**:
+
+`doi`, `title`, `journal`, `year`, `theme`, `type`, `summary`, `why`, `caution`, and `featured`.
+
+The `doi` is the paper's stable identity, `theme` must exist in `content/themes.json`, `featured` is a Boolean, and prose must be an original short synthesis. The site generates the paper page and counts automatically. Do not copy source abstracts wholesale.
+
+### Add a new research area
+
+Add a new name/short description in `content/themes.json`, then assign papers to the new theme.
+
+## Local validation
+
+Python 3.10+ standard library, no extra dependencies:
 
 ```bash
 python scripts/build.py
 python scripts/check.py
+python scripts/test_reusability.py
 python -m http.server 8000 --directory site
 ```
 
-Preview at `http://localhost:8000`. The site generator reads **only** `content/papers.json`, `content/issue.json` and `content/site.json`. All content is intentionally public. Avoid adding private exports, personal data, API keys, or source analysis packets to this repository.
+Preview locally at `http://localhost:8000`. The **reusability regression test** creates fake issues 002/003, an additional paper, and a new topic **inside a temporary directory only**. Synthetic data is never committed or published.
 
-## Publish on GitHub Pages
+## Publishing and provenance
 
-1. Create a **new, public** GitHub repository, e.g. `ai-frontier-monitoring-site`. **Do not** change the private ingestion repository to public.
-2. Upload the contents of this directory (or push them with Git). Set the default branch to `main`.
-3. Repository **Settings → Pages → Build and deployment → Source → GitHub Actions**. The included workflow `.github/workflows/pages.yml` builds, validates and deploys the static website on push to `main`.
-4. For local-only first publication, use the separately supplied `ai-frontier-public-built-v1.zip` as a static-site archive. The preferred long-term deployment is the source repository and Actions workflow.
+- Public deployment: GitHub Pages via `.github/workflows/pages.yml`.
+- Site outputs: generated under `site/` (not authoritative; the public JSON inputs and source code are authoritative).
+- Public record: issue URLs, Git history, commits, and reviewed pull requests. The issue number is permanent; a correction does not reuse that number for a different edition.
+- Editorial reviews: separate claims supported by article abstracts/source excerpts from interpretive synthesis. “Full-text verified” is reserved for documented independent verification.
+- The website is a selective briefing service, **not** a systematic literature review or clinical advice.
 
-The live website URL is assigned by GitHub only after a successful Pages deployment. Do not infer that a URL is live simply because files were generated.
-
-## Editorial workflow
-
-- Source material is collected and analyzed in a **separate private environment**.
-- Curate only externally shareable DOI-linked papers in `content/papers.json`; all site-facing fields are an explicit allowlist.
-- Draft reports in `content/issue.json`, which should receive an editorial check before public release.
-- Commit the reviewed content. The build regenerates all HTML; Git history forms the public version record.
-- Never let the public repo's CI fetch from the private repo or Drive. There is **no automatic transfer** between the two systems by design.
-
-## Content discipline
-
-- Link to primary DOI records, not paywalled copies.
-- State findings conservatively and separate study claims from interpretation.
-- Do not claim full-text review when only abstract or source excerpts were checked.
-- No copied full abstracts or long copyrighted text passages.
-- This is a selective research brief, not an exhaustive systematic review or clinical guidance.
-
-## Files
-
-- `content/`: small public editorial data files, not the screening database.
-- `scripts/build.py`: deterministic site generator.
-- `scripts/check.py`: privacy/DOI, content and internal link checks.
-- `assets/`: design CSS and zero-dependency interactive search.
-- `site/`: generated HTML, also suitable for static hosting.
-- `.github/workflows/pages.yml`: public Pages deployment with source-only permissions.
-
-All commentary is editorial, and links lead to the original publications for verification. This website is not affiliated with the journals or publishers it cites.
+This repository and its public deployments are deliberately isolated from the private research dataset, including non-selected and unverified candidate publications.
