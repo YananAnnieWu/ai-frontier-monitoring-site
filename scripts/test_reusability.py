@@ -25,6 +25,8 @@ def main():
             shutil.copytree(SRC/dirname,dst/dirname)
         original=(dst/"content"/"issues"/"001.json").read_bytes()
         run(dst,["reports/issue-001/index.html", "archive/index.html", "papers/index.html"])
+        assert not (dst/"site"/"methodology").exists()
+        assert "Methodology" not in (dst/"site"/"index.html").read_text(encoding="utf-8")
         template=json.loads(original)
         themes=json.loads((dst/"content"/"themes.json").read_text(encoding="utf-8"))
         themes["New research theme"]="An additional discipline that does not require a template change."
@@ -51,7 +53,9 @@ def main():
         homepage=run(dst,["reports/issue-001/index.html","reports/issue-002/index.html","reports/issue-003/index.html",
                           "papers/p-10-5555-frontier-v2-fixture-01/index.html"])
         assert "Synthetic issue 003 (test only)" in homepage
-        assert "Read the latest briefing" in homepage
+        assert "Latest report" in homepage
+        assert "Independent research observatory" not in homepage
+        assert not (dst/"site"/"methodology").exists()
         reports=(dst/"site"/"reports"/"index.html").read_text(encoding="utf-8")
         archive=(dst/"site"/"archive"/"index.html").read_text(encoding="utf-8")
         for i in ("001","002","003"):

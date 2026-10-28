@@ -10,7 +10,7 @@
   function update(){
     const q=search.value.toLocaleLowerCase().trim();const theme=filter.value;let visible=0;
     for(const card of cards){const matchesText=!q||(card.dataset.search||'').includes(q);const matchesTheme=!theme||card.dataset.theme===theme;const ok=matchesText&&matchesTheme;card.hidden=!ok;card.style.display=ok?'':'none';if(ok)visible++;}
-    if(status)status.textContent=visible+' of '+cards.length+' selected papers shown';
+    if(status)status.textContent=visible+' of '+cards.length+' papers shown';
   }
   search.addEventListener('input',update);filter.addEventListener('change',update);update();
 })();

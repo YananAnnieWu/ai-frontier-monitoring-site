@@ -2,43 +2,59 @@
   "id": "001",
   "date": "2026-10-27",
   "title": "From capable agents to accountable decisions",
-  "subtitle": "Five research signals across AI systems, human oversight, scientific discovery and organizations",
-  "lead": "The frontier is no longer defined by model capability alone. This inaugural briefing highlights how coordination, calibrated decision-making, tool-based scientific work and organizational consequences are becoming central questions in AI research.",
+  "subtitle": "Research findings on AI systems, human oversight, science and organizations",
+  "lead": "This issue summarizes research on multi-agent coordination, AI-assisted decisions, scientific tools, and organizational effects.",
   "signals": [
     {
       "eyebrow": "01 / Agent systems",
       "title": "Coordination is an engineering choice—not a free performance gain",
       "body": "Multi-agent work is increasingly measured against stronger single-agent baselines. The research suggests that the value of coordination depends on task structure, model capability and the overhead and error pathways created by interaction. Group-level studies add a further concern: collective dynamics can produce biases that are not obvious from evaluating agents in isolation.",
       "takeaway": "Monitor task-normalized comparisons, failure amplification and evaluation budgets—not just agent counts.",
-      "dois": ["10.1038/s42256-026-01268-y", "10.1073/pnas.2531697123"]
+      "dois": [
+        "10.1038/s42256-026-01268-y",
+        "10.1073/pnas.2531697123"
+      ]
     },
     {
       "eyebrow": "02 / Scientific agents",
       "title": "Research workflows are becoming executable",
       "body": "Systems such as Paper2Agent and broader biomedical research agents connect scholarly material to tools, code and repeatable workflows. This may improve access to methods and support cross-paper reuse, but executable output is not synonymous with independent scientific validation. Robust provenance, testing and expert oversight remain essential.",
       "takeaway": "Track machine-operable research artifacts alongside reproducibility, failure handling and scientific auditability.",
-      "dois": ["10.1038/s41586-026-11044-y", "10.1126/science.adz4351"]
+      "dois": [
+        "10.1038/s41586-026-11044-y",
+        "10.1126/science.adz4351"
+      ]
     },
     {
       "eyebrow": "03 / Human oversight",
       "title": "Helpful explanations can also amplify bad advice",
       "body": "Studies of explainable AI and human decision-making indicate that explanation quality, expertise and the correctness of AI advice jointly shape outcomes. Separate evidence on covertly misaligned advisers shows that perceived usefulness can coexist with shifts toward inferior decisions. Trust and reliance therefore need to be evaluated through observed choices, not self-report alone.",
       "takeaway": "Evaluate assistance under both correct and incorrect advice, across user groups and decision contexts.",
-      "dois": ["10.1038/s41591-026-04553-w", "10.1073/pnas.2600684123", "10.1038/s41586-026-10950-5"]
+      "dois": [
+        "10.1038/s41591-026-04553-w",
+        "10.1073/pnas.2600684123",
+        "10.1038/s41586-026-10950-5"
+      ]
     },
     {
       "eyebrow": "04 / AI for science",
       "title": "Generative biology needs experimental evidence",
-      "body": "Genome-scale bacteriophage design and function-oriented protein-model alignment both illustrate movement from generating candidate sequences toward measuring biological function. They are striking technical directions, but laboratory validation, transferability and downstream safety vary by task. A viable laboratory result is not automatically a clinical outcome.",
+      "body": "Genome-scale bacteriophage design and function-oriented protein-model alignment both illustrate movement from generating candidate sequences toward measuring biological function. The methods show technical progress, but laboratory validation, transferability and downstream safety vary by task. A viable laboratory result is not automatically a clinical outcome.",
       "takeaway": "Separate computational novelty from measured experimental function, biological safety and real-world transfer.",
-      "dois": ["10.1126/science.aec2657", "10.1038/s41592-026-03137-3"]
+      "dois": [
+        "10.1126/science.aec2657",
+        "10.1038/s41592-026-03137-3"
+      ]
     },
     {
       "eyebrow": "05 / Organizations",
       "title": "AI may change the composition of work and innovation",
       "body": "Emerging studies distinguish more software products from more novel products, and changing hiring demands from verified workforce displacement. Both lines suggest that measuring AI's organizational impact requires attention to allocation: which tasks, skills and kinds of innovation become more or less valuable—not just aggregate output.",
       "takeaway": "Watch product novelty, maintenance, skill substitution and identification strength before inferring causal impacts.",
-      "dois": ["10.1002/smj.70118", "10.1287/mnsc.2025.01859"]
+      "dois": [
+        "10.1002/smj.70118",
+        "10.1287/mnsc.2025.01859"
+      ]
     }
   ],
   "watchlist": [

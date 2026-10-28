@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'site'
 REQUIRED={
  'index.html','reports/index.html','papers/index.html',
- 'themes/index.html','methodology/index.html','archive/index.html','404.html',
+ 'themes/index.html','archive/index.html','404.html',
  'assets/style.css','assets/app.js','assets/favicon.svg','data/featured-papers.json','.nojekyll'
 }
 PUBLIC_KEYS={'doi','title','journal','year','theme','type','summary','why','caution','featured'}
@@ -42,6 +42,7 @@ def validate():
     problems=[]
     files={x.relative_to(OUT).as_posix() for x in OUT.rglob('*') if x.is_file()}
     for f in REQUIRED-files:problems.append('Missing '+f)
+    if 'methodology/index.html' in files:problems.append('Obsolete Methodology page generated')
     papers=json.loads((ROOT/'content/papers.json').read_text())
     public=json.loads((OUT/'data/featured-papers.json').read_text())
     issue_files=sorted((ROOT/'content/issues').glob('*.json'))
@@ -108,6 +109,9 @@ def validate():
         for needle in FORBIDDEN:
             if needle.lower() in contents.lower():problems.append('Sensitive/private marker in public output '+str(f.relative_to(OUT))+' ['+needle+']')
         if f.suffix!='.html':continue
+        if 'methodology/' in contents.lower():problems.append('Obsolete Methodology link in '+str(f.relative_to(OUT)))
+        for phrase in ('Independent research observatory','Curated. Cited. Revisited.','Reading the signal in AI research','One frontier, many disciplines'):
+            if phrase.lower() in contents.lower():problems.append('Promotional copy found: '+phrase)
         parsed=Parser();parsed.feed(contents)
         if not parsed.has_main:problems.append('Missing main landmark '+str(f))
         if parsed.bad_blank:problems.append('External tab without noopener '+str(f))

@@ -1,6 +1,6 @@
-# AI Frontier Monitoring — public editorial site
+# AI Frontier Monitoring — research reference site
 
-A **public, selectively curated** AI research observatory maintained independently of the private research collection and analysis pipeline. The project tracks AI research broadly, rather than focusing solely on radiology quality control.
+A research reference website for reports and selected papers. The site is publicly reachable but intended primarily as a working reference for the research team. It remains separate from private research records. The project tracks AI research broadly, rather than focusing solely on radiology quality control.
 
 ## What changes in V2
 
@@ -62,3 +62,7 @@ Preview locally at `http://localhost:8000`. The **reusability regression test** 
 - The website is a selective briefing service, **not** a systematic literature review or clinical advice.
 
 This repository and its public deployments are deliberately isolated from the private research dataset, including non-selected and unverified candidate publications.
+
+## Website presentation
+
+Navigation: Home, Reports, Papers, Topics, Archive. No Methodology tab or promotional sections. Source and evidence limitations remain in relevant research notes. A `noindex, nofollow` meta tag and robots.txt `Disallow: /` reduce discoverability; **neither makes this public website private**.
