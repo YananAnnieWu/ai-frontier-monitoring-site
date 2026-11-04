@@ -1,0 +1,68 @@
+{
+  "id": "002",
+  "date": "2026-11-04",
+  "title": "AI performance meets the test of evidence",
+  "subtitle": "Clinical workflows, reproducibility, scientific models and decision systems",
+  "lead": "This issue examines what AI research can substantiate beyond promising benchmark results: clinical reporting quality, mixed deployment outcomes, scientific transfer and evidence-aware decision design.",
+  "signals": [
+    {
+      "eyebrow": "01 / Clinical evidence",
+      "title": "Impressive metrics do not repair weak clinical evidence",
+      "body": "A review of 74 reports from 73 randomized trials of medical generative AI finds substantial omissions in technical reporting, including algorithm versions and input-handling details. A separate umbrella review of fracture-detection AI reports high pooled diagnostic sensitivity and specificity, yet mostly low or very-low evidence certainty and sparse comparative safety information. These studies assess reporting and evidence quality, not whether every deployed system is ineffective.",
+      "takeaway": "Require reproducible model specifications, patient-relevant comparisons and explicit safety outcomes before treating benchmark accuracy as clinical readiness.",
+      "dois": [
+        "10.2196/94543",
+        "10.1038/s41746-026-03303-z",
+        "10.2196/100531"
+      ]
+    },
+    {
+      "eyebrow": "02 / Clinical workflows",
+      "title": "AI adoption and AI use tell different efficiency stories",
+      "body": "An observational study of clinician portal messages links adoption of an AI drafting tool to 8.6% longer response turnaround, while actual use on individual messages is associated with 29.5% shorter turnaround. Overall after-hours response behavior did not significantly decline. Separately, a retrospective modeling study of medical-device clearance proposes a human-algorithm policy with simulated efficiency and safety improvements, not demonstrated regulatory deployment gains.",
+      "takeaway": "Measure organization-wide outcomes separately from task-level tool use and distinguish observational associations or simulations from causal impacts.",
+      "dois": [
+        "10.1001/jamanetworkopen.2026.41364",
+        "10.1287/mnsc.2024.06477"
+      ]
+    },
+    {
+      "eyebrow": "03 / AI for science",
+      "title": "Shared models widen scientific reach, but validation remains task-specific",
+      "body": "An event-level particle-physics foundation model is pretrained on 500 million simulated collisions and evaluated across multiple scientific tasks, including a demonstration on CMS open data. AlphaFold 3-derived structures provide discrimination of previously unseen T-cell receptor–antigen combinations in the reported validation setting. A robotics and machine-learning materials workflow reports promising packaging prototypes but also limited or null outcomes on some measures. None establishes unconstrained transfer or clinical deployment readiness.",
+      "takeaway": "Track independent data transfer, physical validation and failed or inconclusive endpoints alongside headline model performance.",
+      "dois": [
+        "10.1038/s42256-026-01322-9",
+        "10.1126/sciadv.aef5674",
+        "10.1126/sciadv.aef6378"
+      ]
+    },
+    {
+      "eyebrow": "04 / Models of people and markets",
+      "title": "Calibration and model selection matter more than the AI label",
+      "body": "A marketing study proposes calibrating pooled LLM responses to human reference distributions, improving agreement in evaluated settings without guaranteeing new-population validity. A separate earnings-forecast study finds that 80% of its tested machine-learning forecast specifications fail to outperform human analysts, while the strongest specifications correct predictable analyst biases. Both challenge claims that machine-generated estimates automatically represent or exceed human judgment.",
+      "takeaway": "Disclose reference populations, specification search and out-of-sample performance rather than presenting optimized examples as general AI superiority.",
+      "dois": [
+        "10.1287/mksc.2024.0983",
+        "10.1287/mnsc.2024.05808"
+      ]
+    },
+    {
+      "eyebrow": "05 / Decisions and accountability",
+      "title": "Decision automation needs mathematical checks and human responsibility",
+      "body": "Deep reinforcement learning offers methods for approximating and testing equilibria in multistage auctions, but numerical verification depends on stated assumptions. A PNAS perspective argues that AI accountability should trace human choices through model development and deployment, including the attribution, causation and allocation of responsibility. The first is a computational and theoretical contribution; the second is a normative proposal, not verified legal reform.",
+      "takeaway": "Preserve verification conditions, audit trails and accountable human institutions as AI systems enter consequential decisions.",
+      "dois": [
+        "10.1287/mnsc.2024.06771",
+        "10.1073/pnas.2610670123"
+      ]
+    }
+  ],
+  "watchlist": [
+    "Will prospective clinical studies confirm benefits measured in observational AI workflow data?",
+    "How can medical GenAI trials report model versions, inputs and human-AI interactions reproducibly?",
+    "Which foundation-model gains survive independent real-world and out-of-domain testing?",
+    "When do LLM population calibrations remain valid after social or model changes?"
+  ],
+  "scope": "A selective research briefing drawn from the 2026-11-03 review cycle, including recently published and older backlog studies. It compares themes with the preceding public Issue 001, not with every record in the private historical database. Claims are bounded by original-source abstracts, journal material and selected research notes; this is not a systematic review or independent full-text verification of every study. Some studies involve retrospective modeling, observation or conceptual argument rather than demonstrated causal impact."
+}
