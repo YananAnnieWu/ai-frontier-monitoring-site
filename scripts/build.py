@@ -11,6 +11,7 @@ import shutil
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
+from weekly_issue import validate_issues
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "site"
@@ -183,19 +184,76 @@ def build_papers():
         write("papers/"+slug(p['doi'])+"/index.html",layout(p["title"],p["summary"],body,depth=2,active="papers",page_type="article"))
 
 
+def build_weekly_v3_report(issue, byid):
+    """Render compact, dated research evidence instead of journal/year-only links."""
+    pub_cards=[]
+    for item in issue["publications"]:
+        p=byid[item["doi"]]
+        doi=esc(doi_href(item["doi"]))
+        ev=item["publisher_evidence"]
+        pub_cards.append(f'''<section class="signal weekly-paper"><div class="eyebrow">New publication · {esc(item["first_online_date"])}</div>
+          <h2><a href="{doi}" target="_blank" rel="noopener noreferrer">{esc(p["title"])}</a></h2>
+          <p class="section-note">{esc(p["journal"])} · First online {esc(item["first_online_date"])} · <a href="{doi}" target="_blank" rel="noopener noreferrer">Original DOI</a></p>
+          <p><strong>Research contribution.</strong> {esc(item["contribution"])}</p>
+          <p><strong>Main finding.</strong> {esc(item["main_finding"])}</p>
+          <p><strong>Evidence boundary.</strong> {esc(item["evidence_boundary"])}</p>
+          <p><a href="{page_href(item["doi"],2)}">Editorial paper note</a> · <a href="{esc(ev["source_url"])}" target="_blank" rel="noopener noreferrer">Publisher date evidence</a></p></section>''')
+    signals=[]
+    for signal in issue["signals"]:
+        refs=" · ".join(f'<a href="{esc(doi_href(doi))}" target="_blank" rel="noopener noreferrer">{esc(byid[doi]["title"])}</a>' for doi in signal["dois"])
+        signals.append(f'''<section class="signal"><div class="eyebrow">{esc(signal["eyebrow"])}</div>
+          <h2>{esc(signal["title"])}</h2><p>{esc(signal["body"])}</p>
+          <div class="takeaway">Follow-up: {esc(signal["takeaway"])}</div><div class="source-list">Sources: {refs}</div></section>''')
+    events=[]
+    for event in issue["significant_developments"]:
+        events.append(f'''<section class="signal"><div class="eyebrow">Significant development · {esc(event["event_date"])}</div>
+          <h2>New evidence concerning {esc(event["original_doi"])}</h2>
+          <p><strong>Original study first online:</strong> {esc(event["original_first_online"])}</p>
+          <p>{esc(event["substantive_impact"])}</p>
+          <p><strong>Evidence:</strong> {esc(event["independent_evidence_summary"])}</p>
+          <p><a href="{esc(event["primary_source_url"])}" target="_blank" rel="noopener noreferrer">Open this week's primary source</a></p></section>''')
+    c=issue["coverage"]
+    counts=(f'{c["checked"]}/{c["target_journals"]} publisher catalogs checked; '
+            f'{c["partial"]} partial, {c["failed"]} failed, {c["unverified"]} unverified. '
+            f'{c["discovered_candidates"]} discovered candidates, {c["screened_candidates"]} screened.')
+    questions="".join(f"<li>{esc(q)}</li>" for q in issue["watchlist"])
+    return f'''<section class="page-hero"><div class="container"><div class="breadcrumbs"><a href="../../">Home</a> / <a href="../">Reports</a> / Issue {esc(issue["id"])}</div>
+      <div class="section-kicker" style="margin-top:24px">Weekly research · Issue {esc(issue["id"])}</div>
+      <h1>{esc(issue["title"])}</h1><p>{esc(issue["subtitle"])}</p>
+      <div class="byline"><span>Published {issue_date(issue)}</span><span>Publication window {esc(issue["week_start"])} to {esc(issue["week_end"])} (Asia/Shanghai)</span></div></div></section>
+      <section class="main-content"><div class="container"><article class="reading-shell">
+      <p class="report-lead">{esc(issue["lead"])}</p>
+      <h2>Key New Publications</h2>
+      {''.join(pub_cards) if pub_cards else '<p>No eligible research papers selected this week.</p>'}
+      <h2>Emerging Research Signals</h2>
+      {''.join(signals) if signals else '<p>No cross-paper trend inferred this week.</p>'}
+      <h2>Significant Developments</h2>
+      {''.join(events) if events else '<p>No separately verified major follow-up event this week.</p>'}
+      <h2>Coverage &amp; Gaps</h2><p>{esc(counts)}</p>
+      <p>{esc(c["notes"])}</p>
+      <h2>Follow-up questions</h2><ol>{questions}</ol>
+      <div class="disclaimer" style="margin-top:30px"><strong>Source basis.</strong> {esc(issue["scope"])}</div>
+      <p style="margin-top:30px"><a href="../">← All research reports</a></p>
+      </article></div></section>'''
+
+
 def build_reports():
     rows=[]
     byid={p['doi']:p for p in PAPERS}
     for issue in ISSUES:
         rows.append(f'''<article class="archive-row"><div><div class="section-kicker">Issue {esc(issue['id'])} · {esc(issue['date'])}</div>
            <h3><a href="{issue_path(issue)}">{esc(issue['title'])}</a></h3><p>{esc(issue['subtitle'])}</p></div>
-           <div class="archive-meta">{len(issue['signals'])} topics<br>{issue_date(issue)}</div></article>''')
+           <div class="archive-meta">{len(issue.get('signals', []))} topics<br>{issue_date(issue)}</div></article>''')
     body=heading("Reports","Research summaries organized by date.","reports")+f'''<section class="main-content"><div class="container">
        {''.join(rows)}
        
        </div></section>'''
     write("reports/index.html",layout("Reports","Reports and research summaries by date.",body,depth=1,active="reports"))
     for issue in ISSUES:
+        if issue.get("schema_version") == 3:
+            body=build_weekly_v3_report(issue,byid)
+            write("reports/"+issue_path(issue)+"index.html",layout(issue["title"],issue["subtitle"],body,depth=2,active="reports",page_type="article"))
+            continue
         signal_html=[]
         for signal in issue['signals']:
             refs=''.join(f'<a href="{page_href(doi,2)}">{esc(byid[doi]["journal"])} · {esc(byid[doi]["year"])} ↗</a>' for doi in signal['dois'])
@@ -236,7 +294,7 @@ def build_archive():
             groups.append(f'<div class="section-kicker">{esc(year)}</div>')
             current_year=year
         groups.append(f'''<article class="archive-row"><div><h3><a href="../reports/{issue_path(issue)}">{issue_date(issue)} · Issue {esc(issue['id'])}</a></h3>
-           <p><strong>{esc(issue['title'])}</strong> — {esc(issue['subtitle'])}</p></div><div class="archive-meta">{len(issue['signals'])} topics</div></article>''')
+           <p><strong>{esc(issue['title'])}</strong> — {esc(issue['subtitle'])}</p></div><div class="archive-meta">{len(issue.get('signals', []))} topics</div></article>''')
     body=heading("Archive","Previous reports, grouped by year.","archive")+f'''<section class="main-content"><div class="container">
        {''.join(groups)}
        
@@ -250,6 +308,7 @@ def build_404():
 
 
 def build():
+    validate_issues(ISSUES, PAPERS)
     if OUT.exists():shutil.rmtree(OUT)
     OUT.mkdir()
     shutil.copytree(ROOT/"assets",OUT/"assets")
