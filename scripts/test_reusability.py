@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from test_weekly_issue import run_validation_tests
 
 SRC = Path(__file__).resolve().parents[1]
 
@@ -19,6 +20,7 @@ def run(folder, expected):
 
 
 def main():
+    run_validation_tests()
     with tempfile.TemporaryDirectory(prefix="frontier-site-regression-") as td:
         dst=Path(td)
         for dirname in ("assets", "scripts", "content"):
@@ -48,11 +50,44 @@ def main():
                           "subtitle":"Regression testing, never published", "signals":[dict(template["signals"][0])],
                           "watchlist":["Did the prior issue remain accessible?"]})
             if number==3:
-                issue["signals"][0]["dois"]=[sample["doi"]]
+                issue={
+                    "schema_version":3,"id":"003","date":"2026-11-24",
+                    "week_start":"2026-11-16","week_end":"2026-11-22",
+                    "title":"Synthetic issue 003 (test only)",
+                    "subtitle":"Regression testing, never published",
+                    "lead":"Synthetic publication-first demonstration. No actual research is claimed.",
+                    "scope":"Synthetic test-only evidence and coverage are not real verification.",
+                    "watchlist":["What can be validated with a reproducible fixture?"],
+                    "publications":[{
+                        "doi":sample["doi"],"first_online_date":"2026-11-20",
+                        "publisher_evidence":{"published_at":"2026-11-20","granularity":"day",
+                            "event_type":"journal_first_online","authority":"publisher",
+                            "source_url":"https://publisher.test/articles/synthetic",
+                            "retrieved_at":"2026-11-23T10:00:00+08:00",
+                            "verification_status":"verified","conflicting":False},
+                        "contribution":"Synthetic comparison of versioned site publication schemas.",
+                        "main_finding":"The renderer displays a dated record and original DOI.",
+                        "evidence_boundary":"This record exists only in temporary regression fixtures."
+                    }],
+                    "signals":[{"eyebrow":"Synthetic signal","title":"Schema migration",
+                        "body":"No real world finding is implied by this fixture.",
+                        "takeaway":"Verify first-online eligibility.","dois":[sample["doi"]]}],
+                    "significant_developments":[],
+                    "coverage":{"target_journals":88,"checked":0,"partial":0,"failed":0,
+                        "unverified":88,"discovered_candidates":1,"screened_candidates":1,
+                        "notes":"All journal checks are unverified in this synthetic example."}
+                }
             (dst/"content"/"issues"/f"{number:03d}.json").write_text(json.dumps(issue,ensure_ascii=False,indent=2),encoding="utf-8")
         homepage=run(dst,["reports/issue-001/index.html","reports/issue-002/index.html","reports/issue-003/index.html",
                           "papers/p-10-5555-frontier-v2-fixture-01/index.html"])
         assert "Synthetic issue 003 (test only)" in homepage
+        issue003=(dst/"site"/"reports"/"issue-003"/"index.html").read_text(encoding="utf-8")
+        assert "Key New Publications" in issue003 and "2026-11-20" in issue003
+        assert "Coverage &amp; Gaps" in issue003 and "Original DOI" in issue003
+        assert "Significant Developments" in issue003
+        for legacy in ("001","002"):
+            legacy_html=(dst/"site"/"reports"/f"issue-{legacy}"/"index.html").read_text(encoding="utf-8")
+            assert "Follow-up questions" in legacy_html
         assert "Latest report" in homepage
         assert "Independent research observatory" not in homepage
         assert not (dst/"site"/"methodology").exists()
