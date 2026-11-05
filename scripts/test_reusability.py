@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from test_weekly_issue import run_validation_tests
 
 SRC = Path(__file__).resolve().parents[1]
 
@@ -19,6 +20,7 @@ def run(folder, expected):
 
 
 def main():
+    run_validation_tests()
     with tempfile.TemporaryDirectory(prefix="frontier-site-regression-") as td:
         dst=Path(td)
         for dirname in ("assets", "scripts", "content"):
