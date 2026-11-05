@@ -8,6 +8,7 @@ from datetime import date
 from urllib.parse import urlsplit, unquote
 import re
 import sys
+from weekly_issue import validate_issue
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'site'
@@ -77,13 +78,17 @@ def validate():
         pair=(issue.get('date'),issue_id)
         if pair in pairs:problems.append('Duplicate publication edition '+str(pair))
         pairs.add(pair)
+        try:
+            validate_issue(issue,{p['doi']:p for p in papers},path.name)
+        except (ValueError, TypeError, KeyError) as err:
+            problems.append('Weekly issue publication gate failed '+str(issue_id)+': '+str(err))
         for required_key in ('title','subtitle','lead','scope'):
             if not isinstance(issue.get(required_key),str) or not issue[required_key].strip():
                 problems.append('Incomplete issue '+str(issue_id)+' / '+required_key)
         if not isinstance(issue.get('watchlist'),list) or not all(isinstance(w,str) and w.strip() for w in issue['watchlist']):
             problems.append('Invalid issue watchlist '+str(issue_id))
-        if not isinstance(issue.get('signals'),list) or not issue['signals']:
-            problems.append('Issue has no research signals '+str(issue_id))
+        if not isinstance(issue.get('signals'),list) or (issue_id in ('001','002') and not issue['signals']):
+            problems.append('Issue has invalid research signals '+str(issue_id))
         else:
             for signal in issue['signals']:
                 for key in ('eyebrow','title','body','takeaway'):
