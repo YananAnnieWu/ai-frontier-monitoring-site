@@ -129,7 +129,7 @@ def _valid_event(entry, start, end, publication_dois):
 
 
 def validate_issue(issue, bydoi, filename=None):
-    """Validate a v3 public issue. Legacy Issues 001/002 are untouched."""
+    """Validate revised Issue 002 and future v3 issues; preserve Issue 001."""
     if type(issue) is not dict:
         raise ValueError("Issue must be an object")
     ident = issue.get("id")
@@ -137,9 +137,9 @@ def validate_issue(issue, bydoi, filename=None):
         raise ValueError("Issue ID must be 3 digits")
     if filename is not None and filename != ident + ".json":
         raise ValueError("Issue filename and ID mismatch")
-    if ident in ("001","002"):
+    if ident == "001":
         if "schema_version" in issue:
-            raise ValueError("Historical Issues 001/002 must remain legacy format")
+            raise ValueError("Issue 001 must retain its legacy format")
         return "legacy"
     if issue.get("schema_version") != 3 or set(issue) != TOP_KEYS:
         raise ValueError("New weekly issues require exact schema_version 3 fields")
