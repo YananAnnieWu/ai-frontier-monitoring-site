@@ -44,7 +44,7 @@ def main():
         })
         papers.append(sample)
         (dst/"content"/"papers.json").write_text(json.dumps(papers,indent=2,ensure_ascii=False),encoding="utf-8")
-        for number,when in ((2,"2026-11-10"),(3,"2026-11-24")):
+        for number,when in ((3,"2026-11-24"),):
             issue=dict(template)
             issue.update({"id":f"{number:03d}","date":when,"title":f"Synthetic issue {number:03d} (test only)",
                           "subtitle":"Regression testing, never published", "signals":[dict(template["signals"][0])],
@@ -85,7 +85,10 @@ def main():
         assert "Key New Publications" in issue003 and "2026-11-20" in issue003
         assert "Coverage &amp; Gaps" in issue003 and "Original DOI" in issue003
         assert "Significant Developments" in issue003
-        for legacy in ("001","002"):
+        revised002=(dst/"site"/"reports"/"issue-002"/"index.html").read_text(encoding="utf-8")
+        assert "Coverage &amp; Gaps" in revised002 and "2026-10-30" in revised002
+        assert "Original DOI" in revised002 and "Correction dated 6 November 2026" in revised002
+        for legacy in ("001",):
             legacy_html=(dst/"site"/"reports"/f"issue-{legacy}"/"index.html").read_text(encoding="utf-8")
             assert "Follow-up questions" in legacy_html
         assert "Latest report" in homepage
