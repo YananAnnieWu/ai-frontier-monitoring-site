@@ -22,8 +22,8 @@
         "conflicting": false
       },
       "contribution": "Analyzes how generative-AI randomized trials report technical and operational details.",
-      "main_finding": "The systematic review identifies recurring gaps in model, input and implementation reporting across the examined trials.",
-      "evidence_boundary": "Reporting completeness does not establish clinical effectiveness or safety."
+      "main_finding": "Across 74 reports representing 73 randomized trials, key reporting gaps included algorithm versioning (17/74 reported), input-data eligibility (3/73), and input quality handling (0/72).",
+      "evidence_boundary": "These are reporting-adherence findings, not direct estimates of the safety or clinical effectiveness of the 73 interventions; the review did not assess trial risk of bias."
     },
     {
       "doi": "10.1038/s41746-026-03303-z",
@@ -38,9 +38,9 @@
         "verification_status": "verified",
         "conflicting": false
       },
-      "contribution": "Aggregates published AI fracture-detection reviews and evaluates the strength of their evidence.",
-      "main_finding": "Pooled diagnostic accuracy appears high, while comparative evidence and safety outcomes remain limited and certainty is mostly low.",
-      "evidence_boundary": "Second-order meta-analysis is not a prospective deployment or patient-outcome trial."
+      "contribution": "Umbrella review of 50 reviews encompassing 387 primary fracture-detection studies, with 21 meta-analyses contributing to a second-order meta-analysis.",
+      "main_finding": "Pooled AI sensitivity was 0.897 and specificity 0.904, but most outcome certainty was low or very low; no included review reported adverse events or other safety outcomes.",
+      "evidence_boundary": "Comparative evidence for AI, clinicians and AI-assisted clinicians was sparse and inconclusive; pooled diagnostic accuracy is not proof of improved patient outcomes."
     },
     {
       "doi": "10.2196/100531",
@@ -55,9 +55,9 @@
         "verification_status": "verified",
         "conflicting": false
       },
-      "contribution": "Develops and pilots a structured rubric for evaluating healthcare-related generative AI.",
-      "main_finding": "The OMNI framework offers a standardized evaluation approach tested in a mixed-method pilot.",
-      "evidence_boundary": "Pilot rubric feasibility does not establish effectiveness across all clinical workflows."
+      "contribution": "Develops the 10-domain OMNI rubric and pilots it with 15 clinician assessors across four health care scenarios and 250 input-output pairs.",
+      "main_finding": "OMNI differentiated output strengths and weaknesses; fine-grained pairwise agreement across four-point ratings ranged from 30.8% to 53.4%, while broader collapsed agreement was higher.",
+      "evidence_boundary": "An expert-led pilot with modest fine-grained agreement does not establish broad reliability, psychometric validity or clinical safety across settings."
     },
     {
       "doi": "10.1001/jamanetworkopen.2026.41364",
@@ -72,9 +72,9 @@
         "verification_status": "verified",
         "conflicting": false
       },
-      "contribution": "Separates organization-level AI drafting-tool adoption from its use on specific clinician messages.",
-      "main_finding": "Adoption was associated with longer turnaround, whereas individual use was associated with shorter turnaround in the observed setting.",
-      "evidence_boundary": "Observational associations may reflect selection and workflow differences; causality is not established."
+      "contribution": "Observational cohort analysis of 983,154 patient-portal message responses distinguishes organization-level adoption of an AI drafting tool from actual message-level use.",
+      "main_finding": "Tool adoption was associated with an 8.6% longer turnaround time, whereas actual tool use was associated with a 29.5% shorter turnaround; there was no overall reduction in after-hours replying.",
+      "evidence_boundary": "Associations are observational, not randomized causal effects; after-hours results differed by when messages arrived and were sensitive to working-hours definitions."
     },
     {
       "doi": "10.1038/s42256-026-01322-9",
@@ -132,8 +132,8 @@
     {
       "eyebrow": "01 / Clinical evidence",
       "title": "Benchmark results do not replace patient-relevant evidence",
-      "body": "A systematic review of medical GenAI trials documents technical reporting omissions, while a fracture-detection umbrella review shows encouraging pooled accuracy but weak overall certainty and little comparative safety information. A separate evaluation-rubric pilot illustrates the need for reproducible assessment methods.",
-      "takeaway": "Distinguish reporting completeness, diagnostic accuracy and patient outcomes before claiming clinical readiness.",
+      "body": "Across 74 reports from 73 medical GenAI randomized trials, a reporting audit found algorithm versions documented in just 17/74 reports and no input-quality handling in 72 applicable reports. A separate fracture-detection umbrella review reported pooled sensitivity of 0.897 and specificity of 0.904, but generally low evidence certainty and no reported safety outcomes. The 10-domain OMNI rubric pilot offered structured expert evaluation, yet fine-grained pairwise agreement was only 30.8%–53.4%.",
+      "takeaway": "Track technical reproducibility, inter-rater reliability, comparative patient-relevant outcomes and safety reporting separately from headline model accuracy.",
       "dois": [
         "10.2196/94543",
         "10.1038/s41746-026-03303-z",
@@ -143,8 +143,8 @@
     {
       "eyebrow": "02 / Clinical operations",
       "title": "Adoption and individual use are different estimands",
-      "body": "In the observational analysis of clinician messaging, uptake of an AI draft-response tool and actual use for an individual message were associated with different turnaround outcomes. This pattern should not be treated as an established causal productivity effect.",
-      "takeaway": "Report organization-level and per-task effects separately, with attention to selection and after-hours workload.",
+      "body": "A cohort study of 983,154 portal-message responses found an 8.6% longer turnaround associated with adopting an AI drafting tool but a 29.5% shorter turnaround associated with its actual use for individual messages. There was no overall decline in after-hours replies, although associations varied across message categories and timing. These estimates are observational, not causal treatment effects.",
+      "takeaway": "Separate organizational adoption from message-level use, and report the mixed after-hours findings rather than equating speed with reduced clinician burden.",
       "dois": [
         "10.1001/jamanetworkopen.2026.41364"
       ]
@@ -184,7 +184,7 @@
     "unverified": 88,
     "discovered_candidates": 12,
     "screened_candidates": 12,
-    "notes": "This revision reclassifies only the 12 DOI citations in the original Issue 002; it is NOT a completed discovery sweep of all 88 target journals. Seven original papers have publisher-visible first-online dates within 26 Oct–1 Nov; three Management Science articles first appeared months earlier and are excluded from this week's new-publication list. Two Science Advances papers have independent dated records, but direct publisher verification was inaccessible during this revision, so they remain pending. No material-update event has independently approved evidence. Verified publisher catalog completeness remains 0/88."
+    "notes": "This retrospective correction reclassifies the 12 DOI citations in the original Issue 002, NOT a comprehensive sweep of 88 target journals. Seven publisher-dated journal papers first appeared during 26 Oct–1 Nov; three Management Science papers first appeared in December 2025, February 2026 or August 2026 and are historical. PubMed records for the two Science Advances studies report article dates of 28 and 30 October 2026, but their publisher pages returned HTTP 403 during source checking; they remain pending publisher-original verification and are not counted as verified new publications. No independently approved significant development is claimed. Verified complete publisher catalog coverage remains 0/88."
   },
-  "scope": "Historical issue correction (6 November 2026), retaining the original issue's 4 November publication date and URL. The previous issue mixed recent publications with backlog. The revision validates first-online dates for previously cited papers and limits claims to reviewed publisher pages and source-linked abstracts. It does not claim a systematic 88-journal search, verified raw HTML snapshots, authenticated human editor approvals or complete independent full-text verification. Three older citations and two publisher-unverified citations are withheld from ordinary weekly coverage; they remain accessible via the public paper catalogue for historical context."
+  "scope": "Corrections dated 6 November 2026; the historical 4 November issue date and report URL are preserved. Reclassification covers the twelve original DOI citations only, including three older studies and two Science Advances papers with independently indexed but not directly publisher-verified dates. Study-level methods, numerators, effect estimates and limitations are drawn from linked publisher source abstracts and article text; cross-paper signals are editorial synthesis, not independently reproduced causal analyses. No exhaustive 88-journal discovery, publisher byte-snapshot authentication, independent full-text validation of every study, or authenticated editor receipt is claimed."
 }
