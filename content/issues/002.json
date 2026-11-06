@@ -1,15 +1,139 @@
 {
+  "schema_version": 3,
   "id": "002",
   "date": "2026-11-04",
   "title": "AI performance meets the test of evidence",
-  "subtitle": "Clinical workflows, reproducibility, scientific models and decision systems",
-  "lead": "This issue examines what AI research can substantiate beyond promising benchmark results: clinical reporting quality, mixed deployment outcomes, scientific transfer and evidence-aware decision design.",
+  "subtitle": "Revised research brief · First online 26 October–1 November 2026",
+  "lead": "Correction dated 6 November 2026. This edition separates verifiable new journal publications from older or presently unverified citations, with direct original-source links and explicit evidence limits. The original briefing contained twelve citations; seven have individually verified first-online dates in the target week.",
+  "week_start": "2026-10-26",
+  "week_end": "2026-11-01",
+  "publications": [
+    {
+      "doi": "10.2196/94543",
+      "first_online_date": "2026-10-28",
+      "publisher_evidence": {
+        "published_at": "2026-10-28",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://www.jmir.org/2026/1/e94543/",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Analyzes how generative-AI randomized trials report technical and operational details.",
+      "main_finding": "The systematic review identifies recurring gaps in model, input and implementation reporting across the examined trials.",
+      "evidence_boundary": "Reporting completeness does not establish clinical effectiveness or safety."
+    },
+    {
+      "doi": "10.1038/s41746-026-03303-z",
+      "first_online_date": "2026-10-27",
+      "publisher_evidence": {
+        "published_at": "2026-10-27",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://www.nature.com/articles/s41746-026-03303-z",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Aggregates published AI fracture-detection reviews and evaluates the strength of their evidence.",
+      "main_finding": "Pooled diagnostic accuracy appears high, while comparative evidence and safety outcomes remain limited and certainty is mostly low.",
+      "evidence_boundary": "Second-order meta-analysis is not a prospective deployment or patient-outcome trial."
+    },
+    {
+      "doi": "10.2196/100531",
+      "first_online_date": "2026-10-27",
+      "publisher_evidence": {
+        "published_at": "2026-10-27",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://www.jmir.org/2026/1/e100531/",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Develops and pilots a structured rubric for evaluating healthcare-related generative AI.",
+      "main_finding": "The OMNI framework offers a standardized evaluation approach tested in a mixed-method pilot.",
+      "evidence_boundary": "Pilot rubric feasibility does not establish effectiveness across all clinical workflows."
+    },
+    {
+      "doi": "10.1001/jamanetworkopen.2026.41364",
+      "first_online_date": "2026-10-30",
+      "publisher_evidence": {
+        "published_at": "2026-10-30",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2856029",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Separates organization-level AI drafting-tool adoption from its use on specific clinician messages.",
+      "main_finding": "Adoption was associated with longer turnaround, whereas individual use was associated with shorter turnaround in the observed setting.",
+      "evidence_boundary": "Observational associations may reflect selection and workflow differences; causality is not established."
+    },
+    {
+      "doi": "10.1038/s42256-026-01322-9",
+      "first_online_date": "2026-10-29",
+      "publisher_evidence": {
+        "published_at": "2026-10-29",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://www.nature.com/articles/s42256-026-01322-9",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Introduces a reusable event-level particle-collision foundation model across downstream physics tasks.",
+      "main_finding": "EVENET is pretrained on simulated collisions and evaluated on multiple searches and a CMS open-data demonstration.",
+      "evidence_boundary": "Transfer results are limited to evaluated physics tasks, simulation conditions and measured data."
+    },
+    {
+      "doi": "10.1287/mksc.2024.0983",
+      "first_online_date": "2026-10-30",
+      "publisher_evidence": {
+        "published_at": "2026-10-30",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://pubsonline.informs.org/doi/10.1287/mksc.2024.0983",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Proposes a calibration approach to align aggregate LLM responses more closely with human sample distributions.",
+      "main_finding": "The study evaluates sample calibration as a correction for discrepancies between LLM and reference human responses.",
+      "evidence_boundary": "Agreement after calibration is conditional on reference populations and evaluated settings."
+    },
+    {
+      "doi": "10.1073/pnas.2610670123",
+      "first_online_date": "2026-10-30",
+      "publisher_evidence": {
+        "published_at": "2026-10-30",
+        "granularity": "day",
+        "event_type": "journal_first_online",
+        "authority": "publisher",
+        "source_url": "https://www.pnas.org/doi/10.1073/pnas.2610670123",
+        "retrieved_at": "2026-11-06T09:00:00+08:00",
+        "verification_status": "verified",
+        "conflicting": false
+      },
+      "contribution": "Proposes a human-intention-based analytical framework for attributing AI-related responsibility.",
+      "main_finding": "The perspective traces accountability through model objectives, training, deployment and oversight decisions.",
+      "evidence_boundary": "It is a conceptual legal and governance argument, not evidence that proposed rules have been adopted."
+    }
+  ],
   "signals": [
     {
       "eyebrow": "01 / Clinical evidence",
-      "title": "Impressive metrics do not repair weak clinical evidence",
-      "body": "A review of 74 reports from 73 randomized trials of medical generative AI finds substantial omissions in technical reporting, including algorithm versions and input-handling details. A separate umbrella review of fracture-detection AI reports high pooled diagnostic sensitivity and specificity, yet mostly low or very-low evidence certainty and sparse comparative safety information. These studies assess reporting and evidence quality, not whether every deployed system is ineffective.",
-      "takeaway": "Require reproducible model specifications, patient-relevant comparisons and explicit safety outcomes before treating benchmark accuracy as clinical readiness.",
+      "title": "Benchmark results do not replace patient-relevant evidence",
+      "body": "A systematic review of medical GenAI trials documents technical reporting omissions, while a fracture-detection umbrella review shows encouraging pooled accuracy but weak overall certainty and little comparative safety information. A separate evaluation-rubric pilot illustrates the need for reproducible assessment methods.",
+      "takeaway": "Distinguish reporting completeness, diagnostic accuracy and patient outcomes before claiming clinical readiness.",
       "dois": [
         "10.2196/94543",
         "10.1038/s41746-026-03303-z",
@@ -17,52 +141,50 @@
       ]
     },
     {
-      "eyebrow": "02 / Clinical workflows",
-      "title": "AI adoption and AI use tell different efficiency stories",
-      "body": "An observational study of clinician portal messages links adoption of an AI drafting tool to 8.6% longer response turnaround, while actual use on individual messages is associated with 29.5% shorter turnaround. Overall after-hours response behavior did not significantly decline. Separately, a retrospective modeling study of medical-device clearance proposes a human-algorithm policy with simulated efficiency and safety improvements, not demonstrated regulatory deployment gains.",
-      "takeaway": "Measure organization-wide outcomes separately from task-level tool use and distinguish observational associations or simulations from causal impacts.",
+      "eyebrow": "02 / Clinical operations",
+      "title": "Adoption and individual use are different estimands",
+      "body": "In the observational analysis of clinician messaging, uptake of an AI draft-response tool and actual use for an individual message were associated with different turnaround outcomes. This pattern should not be treated as an established causal productivity effect.",
+      "takeaway": "Report organization-level and per-task effects separately, with attention to selection and after-hours workload.",
       "dois": [
-        "10.1001/jamanetworkopen.2026.41364",
-        "10.1287/mnsc.2024.06477"
+        "10.1001/jamanetworkopen.2026.41364"
       ]
     },
     {
       "eyebrow": "03 / AI for science",
-      "title": "Shared models widen scientific reach, but validation remains task-specific",
-      "body": "An event-level particle-physics foundation model is pretrained on 500 million simulated collisions and evaluated across multiple scientific tasks, including a demonstration on CMS open data. AlphaFold 3-derived structures provide discrimination of previously unseen T-cell receptor–antigen combinations in the reported validation setting. A robotics and machine-learning materials workflow reports promising packaging prototypes but also limited or null outcomes on some measures. None establishes unconstrained transfer or clinical deployment readiness.",
-      "takeaway": "Track independent data transfer, physical validation and failed or inconclusive endpoints alongside headline model performance.",
+      "title": "A shared scientific model still needs task-specific validation",
+      "body": "An event-level particle physics foundation model was pretrained on large-scale simulated collisions and evaluated on several downstream tasks, including a CMS open-data demonstration. This offers evidence of transfer in the assessed settings without proving unrestricted generalization.",
+      "takeaway": "Look for independent data transfer, physical validation and failure modes, not only parameter scale.",
       "dois": [
-        "10.1038/s42256-026-01322-9",
-        "10.1126/sciadv.aef5674",
-        "10.1126/sciadv.aef6378"
+        "10.1038/s42256-026-01322-9"
       ]
     },
     {
-      "eyebrow": "04 / Models of people and markets",
-      "title": "Calibration and model selection matter more than the AI label",
-      "body": "A marketing study proposes calibrating pooled LLM responses to human reference distributions, improving agreement in evaluated settings without guaranteeing new-population validity. A separate earnings-forecast study finds that 80% of its tested machine-learning forecast specifications fail to outperform human analysts, while the strongest specifications correct predictable analyst biases. Both challenge claims that machine-generated estimates automatically represent or exceed human judgment.",
-      "takeaway": "Disclose reference populations, specification search and out-of-sample performance rather than presenting optimized examples as general AI superiority.",
+      "eyebrow": "04 / Representativeness and accountability",
+      "title": "Useful AI outputs require calibration and accountable human choices",
+      "body": "An LLM sample-calibration study attempts to better align model-generated responses with human distributions. A PNAS perspective instead emphasizes the human decisions embedded in objectives, training and deployment. The first supplies context-dependent modeling evidence; the second advances a normative framework.",
+      "takeaway": "Do not confuse sample agreement with population validity, or an accountability proposal with enacted policy.",
       "dois": [
         "10.1287/mksc.2024.0983",
-        "10.1287/mnsc.2024.05808"
-      ]
-    },
-    {
-      "eyebrow": "05 / Decisions and accountability",
-      "title": "Decision automation needs mathematical checks and human responsibility",
-      "body": "Deep reinforcement learning offers methods for approximating and testing equilibria in multistage auctions, but numerical verification depends on stated assumptions. A PNAS perspective argues that AI accountability should trace human choices through model development and deployment, including the attribution, causation and allocation of responsibility. The first is a computational and theoretical contribution; the second is a normative proposal, not verified legal reform.",
-      "takeaway": "Preserve verification conditions, audit trails and accountable human institutions as AI systems enter consequential decisions.",
-      "dois": [
-        "10.1287/mnsc.2024.06771",
         "10.1073/pnas.2610670123"
       ]
     }
   ],
   "watchlist": [
-    "Will prospective clinical studies confirm benefits measured in observational AI workflow data?",
-    "How can medical GenAI trials report model versions, inputs and human-AI interactions reproducibly?",
-    "Which foundation-model gains survive independent real-world and out-of-domain testing?",
-    "When do LLM population calibrations remain valid after social or model changes?"
+    "Which clinical evaluations will report prospective patient outcomes, safety and reproducible model versions?",
+    "Can calibrated LLM response distributions remain valid across populations and model updates?",
+    "How often do physics foundation models transfer successfully to real measurements?",
+    "What independent evidence would turn conceptual AI accountability rules into implementable governance?"
   ],
-  "scope": "A selective research briefing drawn from the 2026-11-03 review cycle, including recently published and older backlog studies. It compares themes with the preceding public Issue 001, not with every record in the private historical database. Claims are bounded by original-source abstracts, journal material and selected research notes; this is not a systematic review or independent full-text verification of every study. Some studies involve retrospective modeling, observation or conceptual argument rather than demonstrated causal impact."
+  "significant_developments": [],
+  "coverage": {
+    "target_journals": 88,
+    "checked": 0,
+    "partial": 0,
+    "failed": 0,
+    "unverified": 88,
+    "discovered_candidates": 12,
+    "screened_candidates": 12,
+    "notes": "This revision reclassifies only the 12 DOI citations in the original Issue 002; it is NOT a completed discovery sweep of all 88 target journals. Seven original papers have publisher-visible first-online dates within 26 Oct–1 Nov; three Management Science articles first appeared months earlier and are excluded from this week's new-publication list. Two Science Advances papers have independent dated records, but direct publisher verification was inaccessible during this revision, so they remain pending. No material-update event has independently approved evidence. Verified publisher catalog completeness remains 0/88."
+  },
+  "scope": "Historical issue correction (6 November 2026), retaining the original issue's 4 November publication date and URL. The previous issue mixed recent publications with backlog. The revision validates first-online dates for previously cited papers and limits claims to reviewed publisher pages and source-linked abstracts. It does not claim a systematic 88-journal search, verified raw HTML snapshots, authenticated human editor approvals or complete independent full-text verification. Three older citations and two publisher-unverified citations are withheld from ordinary weekly coverage; they remain accessible via the public paper catalogue for historical context."
 }
