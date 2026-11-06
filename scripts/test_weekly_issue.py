@@ -47,7 +47,10 @@ class WeeklyIssueGateTests(unittest.TestCase):
     def test_valid_week_and_historical_compatibility(self):
         self.assertEqual(validate_issue(self.base,self.papers,"003.json"),"v3")
         self.assertEqual(validate_issue({"id":"001"},self.papers,"001.json"),"legacy")
-        self.assertEqual(validate_issue({"id":"002"},self.papers,"002.json"),"legacy")
+        revised = copy.deepcopy(self.base)
+        revised["id"] = "002"
+        self.assertEqual(validate_issue(revised,self.papers,"002.json"),"v3")
+        with self.assertRaises(ValueError): validate_issue({"id":"002"},self.papers,"002.json")
 
     def test_future_and_partial_weeks_rejected(self):
         self.reject(lambda x:x.update(date="2026-11-08"))
@@ -73,7 +76,7 @@ class WeeklyIssueGateTests(unittest.TestCase):
         self.reject(lambda x:x["signals"][0].update(dois=["10.9999/old"]))
         self.reject(lambda x:x["publications"].append(copy.deepcopy(x["publications"][0])))
         self.reject(lambda x:x.update(schema_version=2))
-        self.reject(lambda x:x.update(id="002"))
+        self.reject(lambda x:x.update(id="001"))
 
     def test_zero_paper_issue_allowed(self):
         item=copy.deepcopy(self.base)
