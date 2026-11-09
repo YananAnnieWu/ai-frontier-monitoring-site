@@ -48,6 +48,22 @@ class Issue002Revision(unittest.TestCase):
         self.assertTrue(all(set(s["dois"]).issubset(selected) for s in self.issue["signals"]))
         self.assertEqual(self.issue["significant_developments"],[])
 
+    def test_stage2_effect_sizes_and_reporting_caveats(self):
+        p={x["doi"]:x for x in self.issue["publications"]}
+        self.assertIn("17/74",p["10.2196/94543"]["main_finding"])
+        self.assertIn("0/72",p["10.2196/94543"]["main_finding"])
+        self.assertIn("0.897",p["10.1038/s41746-026-03303-z"]["main_finding"])
+        self.assertIn("0.904",p["10.1038/s41746-026-03303-z"]["main_finding"])
+        self.assertIn("30.8%",p["10.2196/100531"]["main_finding"])
+        self.assertIn("53.4%",p["10.2196/100531"]["main_finding"])
+        self.assertIn("8.6%",p["10.1001/jamanetworkopen.2026.41364"]["main_finding"])
+        self.assertIn("29.5%",p["10.1001/jamanetworkopen.2026.41364"]["main_finding"])
+        self.assertIn("observational",p["10.1001/jamanetworkopen.2026.41364"]["evidence_boundary"].lower())
+        self.assertIn("PubMed",self.issue["coverage"]["notes"])
+        self.assertIn("HTTP 403",self.issue["coverage"]["notes"])
+        self.assertEqual(self.issue["coverage"]["checked"],0)
+        self.assertEqual(self.issue["significant_developments"],[])
+
     def test_preserve_original_issue001_and_no_committed_issue003(self):
         one=json.loads((ROOT/"content/issues/001.json").read_text())
         self.assertEqual(one["id"],"001")
